@@ -42,6 +42,7 @@ export default function RootLayout() {
       <SignedIn>
         <Stack>
           <Stack.Screen name='index' />
+          <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
         </Stack>
       </SignedIn>
       <SignedOut>
