@@ -1,26 +1,22 @@
 import { View, Text, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
-import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { db } from '../../config/firebaseConfig';
+import getInfoFromFireStore from '../../utils/getInfoFromFireStore';
 
 export default function Slider() {
   const [sliderList, setSliderList] = useState([]);
 
   useEffect(() => {
-    GetSliders();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const data = await getInfoFromFireStore('Sliders');
+        setSliderList(data);
+      } catch (error) {
+        console.error('Error fetching slider data:', error);
+      }
+    };
 
-  const GetSliders = async () => {
-    setSliderList([]);
-    try {
-      const snapshot = await getDocs(collection(db, 'Sliders'));
-      snapshot.forEach((doc) => {
-        setSliderList((prev) => [...prev, doc.data()]);
-      });
-    } catch (error) {
-      console.error('Error fetching sliders:', error);
-    }
-  };
+    fetchData();
+  }, []);
 
   return (
     <View style={{ marginTop: 15 }}>
